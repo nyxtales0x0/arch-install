@@ -1,17 +1,10 @@
 #!/bin/sh
 
-# format the efi partition
-mkfs.fat -F 32 /dev/nvme0n1p1
-
 # format the root partition
-yes | mkfs.ext4 /dev/nvme0n1p2
+yes | mkfs.ext4 /dev/nvme0n1p5
 
 # mount the root partition to /mnt
-mount /dev/nvme0n1p2 /mnt
-
-# pacman configuration
-sed -i "s/#Color/Color/" /etc/pacman.conf
-sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
+mount /dev/nvme0n1p5 /mnt
 
 # install packages
 pacstrap -K /mnt base linux linux-firmware networkmanager

@@ -16,7 +16,8 @@ sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
 mount /dev/nvme0n1p1 /boot/efi --mkdir
 
 # install and setup grub
-yes | pacman -S grub efibootmgr
+yes | pacman -S grub efibootmgr os-prober
+sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
