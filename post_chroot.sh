@@ -30,7 +30,7 @@ yes | pacman -S sudo
 # setup a new user
 useradd -m birb
 yes "birb" | passwd birb
-sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\nbirb ALL=(ALL:ALL) ALL" >> /etc/sudoers
+sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\nbirb ALL=(ALL:ALL) ALL/" >> /etc/sudoers
 
 # enable networkmanager
 systemctl enable NetworkManager
