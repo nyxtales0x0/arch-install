@@ -34,15 +34,23 @@ sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\nbirb ALL=(ALL:ALL) ALL/
 
 # network related stuff
 yes | pacman -S dnsmasq
-echo "# The following lines are desirable for IPv4 capable hosts"  > /etc/hosts
+systemctl enable --now NetworkManager
+
+echo "# The following lines are desirable for IPv4 capable hosts" >> /etc/hosts
 echo "127.0.0.1       localhost"                                  >> /etc/hosts
-echo"# 127.0.1.1 is often used for the FQDN of the machine"       >> /etc/hosts
+echo "# 127.0.1.1 is often used for the FQDN of the machine"      >> /etc/hosts
 echo "127.0.1.1       coffee"                                     >> /etc/hosts
 echo "# The following lines are desirable for IPv6 capable hosts" >> /etc/hosts
 echo "::1             localhost ip6-localhost ip6-loopback"       >> /etc/hosts
 echo "ff02::1         ip6-allnodes"                               >> /etc/hosts
 echo "ff02::2         ip6-allrouters"                             >> /etc/hosts
-echo "[main]"      > /etc/NetworkManager/conf.d/dns.conf
+
+echo "[main]"      >> /etc/NetworkManager/conf.d/dns.conf
 echo "dns=dnsmasq" >> /etc/NetworkManager/conf.d/dns.conf
-systemctl enable --now NetworkManager
+
+echo "listen-address=::1" >> /etc/NetworkManager/dnsmasq.d/ipv6-listen.conf
+
+echo "conf-file=/usr/share/dnsmasq/trust-anchors.conf" >> /etc/NetworkManager/dnsmasq.d/dnssec.conf
+echo "dnssec"                                          >> /etc/NetworkManager/dnsmasq.d/dnssec.conf
+
 nmcli general reload
