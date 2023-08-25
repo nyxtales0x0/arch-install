@@ -32,6 +32,17 @@ useradd -m birb
 yes "birb" | passwd birb
 sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\nbirb ALL=(ALL:ALL) ALL/" /etc/sudoers
 
-# enable networkmanager
-systemctl enable NetworkManager
-
+# network related stuff
+yes | pacman -S dnsmasq
+echo "# The following lines are desirable for IPv4 capable hosts"  > /etc/hosts
+echo "127.0.0.1       localhost"                                  >> /etc/hosts
+echo"# 127.0.1.1 is often used for the FQDN of the machine"       >> /etc/hosts
+echo "127.0.1.1       coffee"                                     >> /etc/hosts
+echo "# The following lines are desirable for IPv6 capable hosts" >> /etc/hosts
+echo "::1             localhost ip6-localhost ip6-loopback"       >> /etc/hosts
+echo "ff02::1         ip6-allnodes"                               >> /etc/hosts
+echo "ff02::2         ip6-allrouters"                             >> /etc/hosts
+echo "[main]"      > /etc/NetworkManager/conf.d/dns.conf
+echo "dns=dnsmasq" >> /etc/NetworkManager/conf.d/dns.conf
+systemctl enable --now NetworkManager
+nmcli general reload
