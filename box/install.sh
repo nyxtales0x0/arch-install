@@ -30,6 +30,11 @@ function configure_pacman() {
 }
 
 function install_base_system() {
+    echo
+    echo "======================="
+    echo "Installing base system:"
+    echo "======================="
+    echo
     mount $ROOT_PARTITION /mnt
     pacstrap -K /mnt base linux linux-firmware networkmanager
     genfstab -U /mnt >> /mnt/etc/fstab

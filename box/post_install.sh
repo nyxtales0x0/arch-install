@@ -1,7 +1,11 @@
 #!/bin/sh
 
 function setup_time_zone() {
-    REGION_CITY="Asia/Kolkata"
+    echo
+    echo "======================================="
+    echo "Please enter your timezone: Region/City"
+    echo "======================================="
+    read REGION_CITY
     ln -sf /usr/share/zoneinfo/$REGION_CITY /etc/localtime
     hwclock --systohc
 }
@@ -13,11 +17,16 @@ function setup_locale() {
 }
 
 function configure_network() {
-    echo "coffee" >> /etc/hostname
+    echo
+    echo "==========================="
+    echo "Please enter your hostname:"
+    echo "==========================="
+    read HOSTNAME
+    echo $HOSTNAME >> /etc/hostname
     echo "# The following lines are desirable for IPv4 capable hosts" >> /etc/hosts
     echo "127.0.0.1       localhost"                                  >> /etc/hosts
     echo "# 127.0.1.1 is often used for the FQDN of the machine"      >> /etc/hosts
-    echo "127.0.1.1       coffee"                                     >> /etc/hosts
+    echo "127.0.1.1       ${HOSTNAME}"                                >> /etc/hosts
     echo "# The following lines are desirable for IPv6 capable hosts" >> /etc/hosts
     echo "::1             localhost ip6-localhost ip6-loopback"       >> /etc/hosts
     echo "ff02::1         ip6-allnodes"                               >> /etc/hosts
@@ -32,6 +41,11 @@ function configure_pacman() {
 }
 
 function setup_grub() {
+    echo
+    echo "==============================="
+    echo "Instlling and setting up GRUB2:"
+    echo "==============================="
+    echo
     mount /dev/vda1 /boot/efi --mkdir
     yes | pacman -S grub efibootmgr os-prober
     sed -i "s/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/" /etc/default/grub
@@ -40,11 +54,24 @@ function setup_grub() {
 }
 
 function setup_users() {
-    yes "root" | passwd
+    echo
+    echo "==============================="
+    echo "Please enter new root password:"
+    echo "==============================="
+    passwd
     yes | pacman -S sudo
-    useradd -m birb
-    yes "birb" | passwd birb
-    sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\nbirb ALL=(ALL:ALL) ALL/" /etc/sudoers
+    echo
+    echo "========================"
+    echo "Please enter a username:"
+    echo "========================"
+    read USERNAME
+    useradd -m $USERNAME
+    echo
+    echo "====================================="
+    echo "Please enter a password for new user:"
+    echo "====================================="
+    passwd $USERNAME
+    sed -i "s/root ALL=(ALL:ALL) ALL/root ALL=(ALL:ALL) ALL\n${USERNAME} ALL=(ALL:ALL) ALL/" /etc/sudoers
 }
 
 setup_time_zone
