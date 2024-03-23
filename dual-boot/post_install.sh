@@ -1,26 +1,40 @@
 #!/bin/sh
 
 function setup_time_zone() {
+    echo "====================="
+    echo "Configuring timezone:"
+    echo "====================="
     echo
-    echo "======================================="
-    echo "Please enter your timezone: Region/City"
-    echo "======================================="
-    read REGION_CITY
-    ln -sf /usr/share/zoneinfo/$REGION_CITY /etc/localtime
+
+    ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
     hwclock --systohc
+
+    echo "[OK]: Press Enter to continue..."
+    read
+    clear
 }
 
 function setup_locale() {
+    echo "==================="
+    echo "Configuring locale:"
+    echo "==================="
+    echo
+
     sed -i "s/#en_IN UTF-8/en_IN UTF-8/" /etc/locale.gen
     locale-gen
     echo "LANG=en_IN.UTF-8" >> /etc/locale.conf
+
+    echo "[OK]: Press Enter to continue..."
+    read
+    clear
 }
 
 function configure_network() {
+    echo "===================="
+    echo "Configuring network:"
+    echo "===================="
     echo
-    echo "==========================="
     echo "Please enter your hostname:"
-    echo "==========================="
     read HOSTNAME
     echo $HOSTNAME >> /etc/hostname
     echo "# The following lines are desirable for IPv4 capable hosts" >> /etc/hosts
