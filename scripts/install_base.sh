@@ -7,7 +7,7 @@ function install_base_system () {
     echo
 
     mount /dev/nvme0n1p5 /mnt
-    pacstrap -K /mnt base linux linux-firmware networkmanager sof-firmware
+    pacstrap -K /mnt base linux linux-firmware networkmanager sof-firmware reflector
     genfstab -U /mnt >> /mnt/etc/fstab
 
     echo "[OK]: Press enter to continue..."
