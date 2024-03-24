@@ -10,6 +10,7 @@ function configure_fonts() {
     tar -xzf ./misc -C /usr/share/local/fonts/
     mkdir ~/.config/fontconfig
     cp ./misc/fonts.conf ~/.config/fontconfig/
+    pacman -S ttf-jetbrains-mono-nerd
     fc-cache --force
 
     echo "[OK]: Press enter to continue..."
